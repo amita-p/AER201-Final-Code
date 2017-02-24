@@ -1,0 +1,32 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"1 controlSensors.c
+[v _setLaserEmitter `(v ~T0 @X0 1 ef1`i ]
+{
+[; ;controlSensors.c: 1: void setLaserEmitter(int emit){
+[e :U _setLaserEmitter ]
+[v _emit `i ~T0 @X0 1 r1 ]
+[f ]
+[; ;controlSensors.c: 3: }
+"3
+[e :UE 1 ]
+}
+"7
+[v _bottleComing `(i ~T0 @X0 1 ef ]
+{
+[; ;controlSensors.c: 7: int bottleComing(){
+[e :U _bottleComing ]
+[f ]
+[; ;controlSensors.c: 9: }
+"9
+[e :UE 2 ]
+}
+"12
+[v _detectBottle `(v ~T0 @X0 1 ef ]
+{
+[; ;controlSensors.c: 12: void detectBottle(){
+[e :U _detectBottle ]
+[f ]
+[; ;controlSensors.c: 14: }
+"14
+[e :UE 3 ]
+}

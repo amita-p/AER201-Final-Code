@@ -1,0 +1,17 @@
+
+# 1 "controlSensors.c"
+void setLaserEmitter(int emit){
+
+}
+
+
+
+int bottleComing(){
+
+}
+
+
+void detectBottle(){
+
+}
+
