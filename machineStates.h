@@ -15,5 +15,14 @@ int numYopNoCap;
 int numYopCap;
 int numSeconds; //number of seconds since operation started
 
+//tracks the current angular position of the containers (clockwise from the chamber exit)
+int eskaNoCapPos;
+int eskaCapPos;
+int yopNoCapPos;
+int yopCapPos;
+
+//detected bottle
+int detectedBottle;
+
 #endif	/* MACHINESTATES_H */
 

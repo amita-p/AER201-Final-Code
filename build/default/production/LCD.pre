@@ -3781,7 +3781,16 @@ int numYopNoCap;
 int numYopCap;
 int numSeconds;
 
-# 9 "LCD.c"
+
+int eskaNoCapPos;
+int eskaCapPos;
+int yopNoCapPos;
+int yopCapPos;
+
+
+int detectedBottle;
+
+# 10 "LCD.c"
 void initLCD(void) {
 _delay((unsigned long)((15)*(10000000/4000.0)));
 lcdInst(0b00110011);
@@ -3865,6 +3874,7 @@ clearLCD();
 lcdWrite("TRANSFERRING...","");
 }
 
+# 97
 void dispCorrectScreen(int key){
 
 if (key == 2 && machineState != 2){

@@ -1,5 +1,16 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"1211 /opt/microchip/xc8/v1.40/include/pic18f4620.h
+"1100 /opt/microchip/xc8/v1.40/include/pic18f4620.h
+[s S44 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S44 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
+"1110
+[s S45 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S45 . LC0 LC1 LC2 LC3 LC4 LC5 LC6 LC7 ]
+"1099
+[u S43 `S44 1 `S45 1 ]
+[n S43 . . . ]
+"1121
+[v _LATCbits `VS43 ~T0 @X0 0 e@3979 ]
+"1211
 [s S47 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S47 . LATD0 LATD1 LATD2 LATD3 LATD4 LATD5 LATD6 LATD7 ]
 "1221
@@ -25,17 +36,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "159 /opt/microchip/xc8/v1.40/include/pic18.h
 [v __delay `JF2878 ~T0 @X0 0 e ]
 [p i __delay ]
-"1100 /opt/microchip/xc8/v1.40/include/pic18f4620.h
-[s S44 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S44 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
-"1110
-[s S45 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S45 . LC0 LC1 LC2 LC3 LC4 LC5 LC6 LC7 ]
-"1099
-[u S43 `S44 1 `S45 1 ]
-[n S43 . . . ]
-"1121
-[v _LATCbits `VS43 ~T0 @X0 0 e@3979 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -2848,306 +2848,491 @@ Version 3.2 HI-TECH Software Intermediate Code
 "16
 [v _numSeconds `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 16: int numSeconds;
-"9 controlMotors.c
+"19
+[v _eskaNoCapPos `i ~T0 @X0 1 e ]
+[; ;machineStates.h: 19: int eskaNoCapPos;
+"20
+[v _eskaCapPos `i ~T0 @X0 1 e ]
+[; ;machineStates.h: 20: int eskaCapPos;
+"21
+[v _yopNoCapPos `i ~T0 @X0 1 e ]
+[; ;machineStates.h: 21: int yopNoCapPos;
+"22
+[v _yopCapPos `i ~T0 @X0 1 e ]
+[; ;machineStates.h: 22: int yopCapPos;
+"25
+[v _detectedBottle `i ~T0 @X0 1 e ]
+[; ;machineStates.h: 25: int detectedBottle;
+"11 controlMotors.c
+[v _rotateStepperMotor `(v ~T0 @X0 1 ef3`i`i`i ]
+{
+[; ;controlMotors.c: 11: void rotateStepperMotor(int degrees,int angularSpeed ,int direction){
+[e :U _rotateStepperMotor ]
+[v _degrees `i ~T0 @X0 1 r1 ]
+[v _angularSpeed `i ~T0 @X0 1 r2 ]
+[v _direction `i ~T0 @X0 1 r3 ]
+[f ]
+"12
+[v _numSteps `i ~T0 @X0 1 a ]
+[; ;controlMotors.c: 12: int numSteps= (degrees/360.0)*4096;
+[e = _numSteps -> * / -> _degrees `d .360.0 -> -> 4096 `i `d `i ]
+"13
+[v _delay `d ~T0 @X0 1 a ]
+[; ;controlMotors.c: 13: double delay = 360.0/(4096*angularSpeed);
+[e = _delay / .360.0 -> * -> 4096 `i _angularSpeed `d ]
+[; ;controlMotors.c: 14: if (direction == 8){
+"14
+[e $ ! == _direction -> 8 `i 267  ]
+{
+[; ;controlMotors.c: 15: LATCbits.LC0 = 0;
+"15
+[e = . . _LATCbits 1 0 -> -> 0 `i `uc ]
+"16
+}
+[; ;controlMotors.c: 16: }
+[e $U 268  ]
+"17
+[e :U 267 ]
+[; ;controlMotors.c: 17: else if (direction == 9){
+[e $ ! == _direction -> 9 `i 269  ]
+{
+[; ;controlMotors.c: 18: LATCbits.LC0 = 1;
+"18
+[e = . . _LATCbits 1 0 -> -> 1 `i `uc ]
+"19
+}
+[e :U 269 ]
+"20
+[e :U 268 ]
+[; ;controlMotors.c: 19: }
+[; ;controlMotors.c: 20: for (int i=0;i<numSteps;i++){
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $U 273  ]
+[e :U 270 ]
+{
+[; ;controlMotors.c: 21: LATCbits.LC1 = 1;
+"21
+[e = . . _LATCbits 1 1 -> -> 1 `i `uc ]
+[; ;controlMotors.c: 23: LATCbits.LC1 = 0;
+"23
+[e = . . _LATCbits 1 1 -> -> 0 `i `uc ]
+"25
+}
+"20
+[e ++ _i -> 1 `i ]
+[e :U 273 ]
+[e $ < _i _numSteps 270  ]
+[e :U 271 ]
+"25
+}
+[; ;controlMotors.c: 25: }
+[; ;controlMotors.c: 26: }
+"26
+[e :UE 266 ]
+}
+"28
 [v _rotateMicroServo `(v ~T0 @X0 1 ef3`*i`i`i ]
 {
-[; ;controlMotors.c: 9: void rotateMicroServo(int *pin, int angle, int direction){
+[; ;controlMotors.c: 28: void rotateMicroServo(int *pin, int angle, int direction){
 [e :U _rotateMicroServo ]
 [v _pin `*i ~T0 @X0 1 r1 ]
 [v _angle `i ~T0 @X0 1 r2 ]
 [v _direction `i ~T0 @X0 1 r3 ]
 [f ]
-[; ;controlMotors.c: 10: if (direction == 8){
-"10
-[e $ ! == _direction -> 8 `i 267  ]
+[; ;controlMotors.c: 29: if (direction == 8){
+"29
+[e $ ! == _direction -> 8 `i 275  ]
 {
-"12
+"31
 }
-[; ;controlMotors.c: 12: }
-[e $U 268  ]
-"13
-[e :U 267 ]
-[; ;controlMotors.c: 13: else if (direction == 9){
-[e $ ! == _direction -> 9 `i 269  ]
+[; ;controlMotors.c: 31: }
+[e $U 276  ]
+"32
+[e :U 275 ]
+[; ;controlMotors.c: 32: else if (direction == 9){
+[e $ ! == _direction -> 9 `i 277  ]
 {
-"15
+"34
 }
-[e :U 269 ]
-"16
-[e :U 268 ]
-[; ;controlMotors.c: 15: }
-[; ;controlMotors.c: 16: }
-[e :UE 266 ]
+[e :U 277 ]
+"35
+[e :U 276 ]
+[; ;controlMotors.c: 34: }
+[; ;controlMotors.c: 35: }
+[e :UE 274 ]
 }
-"18
+"37
 [v _setUpperDiscRotation `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;controlMotors.c: 18: void setUpperDiscRotation(int on){
+[; ;controlMotors.c: 37: void setUpperDiscRotation(int on){
 [e :U _setUpperDiscRotation ]
 [v _on `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;controlMotors.c: 19: LATDbits.LD0=on;
-"19
+[; ;controlMotors.c: 38: LATDbits.LD0=on;
+"38
 [e = . . _LATDbits 1 0 -> _on `uc ]
-[; ;controlMotors.c: 20: }
-"20
-[e :UE 270 ]
+[; ;controlMotors.c: 39: }
+"39
+[e :UE 278 ]
 }
-"23
+"41
 [v _setFanRotation `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;controlMotors.c: 23: void setFanRotation(int direction){
+[; ;controlMotors.c: 41: void setFanRotation(int direction){
 [e :U _setFanRotation ]
 [v _direction `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;controlMotors.c: 24: if (direction==8){
-"24
-[e $ ! == _direction -> 8 `i 272  ]
-{
-[; ;controlMotors.c: 26: if(LATAbits.LA1==1 && LATAbits.LA2==0){
-"26
-[e $ ! && == -> . . _LATAbits 1 1 `i -> 1 `i == -> . . _LATAbits 1 2 `i -> 0 `i 273  ]
-{
-[; ;controlMotors.c: 27: LATAbits.LA1=0;
-"27
-[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 28: LATAbits.LA2=0;
-"28
-[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 29: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
-"29
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
-"30
-}
-[e :U 273 ]
-[; ;controlMotors.c: 30: }
-[; ;controlMotors.c: 31: LATAbits.LA1=0;
-"31
-[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 32: LATAbits.LA2=1;
-"32
-[e = . . _LATAbits 1 2 -> -> 1 `i `uc ]
-"33
-}
-[; ;controlMotors.c: 33: }
-[e $U 274  ]
-"34
-[e :U 272 ]
-[; ;controlMotors.c: 34: else if (direction==9){
-[e $ ! == _direction -> 9 `i 275  ]
-{
-[; ;controlMotors.c: 36: if(LATAbits.LA1==0 && LATAbits.LA2==1){
-"36
-[e $ ! && == -> . . _LATAbits 1 1 `i -> 0 `i == -> . . _LATAbits 1 2 `i -> 1 `i 276  ]
-{
-[; ;controlMotors.c: 37: LATAbits.LA1=0;
-"37
-[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 38: LATAbits.LA2=0;
-"38
-[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 39: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
-"39
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
-"40
-}
-[e :U 276 ]
-[; ;controlMotors.c: 40: }
-[; ;controlMotors.c: 41: LATAbits.LA1=1;
-"41
-[e = . . _LATAbits 1 1 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 42: LATAbits.LA2=0;
+[; ;controlMotors.c: 42: if (direction==8){
 "42
-[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
-"43
-}
-[; ;controlMotors.c: 43: }
-[e $U 277  ]
-"44
-[e :U 275 ]
-[; ;controlMotors.c: 44: else if (direction==13){
-[e $ ! == _direction -> 13 `i 278  ]
+[e $ ! == _direction -> 8 `i 280  ]
 {
-[; ;controlMotors.c: 45: LATAbits.LA1=0;
+[; ;controlMotors.c: 44: if(LATAbits.LA0==1 && LATAbits.LA1==0){
+"44
+[e $ ! && == -> . . _LATAbits 1 0 `i -> 1 `i == -> . . _LATAbits 1 1 `i -> 0 `i 281  ]
+{
+[; ;controlMotors.c: 45: LATAbits.LA0=0;
 "45
-[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 46: LATAbits.LA2=0;
+[e = . . _LATAbits 1 0 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 46: LATAbits.LA1=0;
 "46
-[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
+[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 47: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
 "47
-}
-[e :U 278 ]
+[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
 "48
-[e :U 277 ]
-[e :U 274 ]
-[; ;controlMotors.c: 47: }
-[; ;controlMotors.c: 48: }
-[e :UE 271 ]
 }
+[e :U 281 ]
+[; ;controlMotors.c: 48: }
+[; ;controlMotors.c: 49: LATAbits.LA0=0;
+"49
+[e = . . _LATAbits 1 0 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 50: LATAbits.LA1=1;
+"50
+[e = . . _LATAbits 1 1 -> -> 1 `i `uc ]
 "51
+}
+[; ;controlMotors.c: 51: }
+[e $U 282  ]
+"52
+[e :U 280 ]
+[; ;controlMotors.c: 52: else if (direction==9){
+[e $ ! == _direction -> 9 `i 283  ]
+{
+[; ;controlMotors.c: 54: if(LATAbits.LA0==0 && LATAbits.LA1==1){
+"54
+[e $ ! && == -> . . _LATAbits 1 0 `i -> 0 `i == -> . . _LATAbits 1 1 `i -> 1 `i 284  ]
+{
+[; ;controlMotors.c: 55: LATAbits.LA0=0;
+"55
+[e = . . _LATAbits 1 0 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 56: LATAbits.LA1=0;
+"56
+[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 57: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
+"57
+[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
+"58
+}
+[e :U 284 ]
+[; ;controlMotors.c: 58: }
+[; ;controlMotors.c: 59: LATAbits.LA0=1;
+"59
+[e = . . _LATAbits 1 0 -> -> 1 `i `uc ]
+[; ;controlMotors.c: 60: LATAbits.LA1=0;
+"60
+[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
+"61
+}
+[; ;controlMotors.c: 61: }
+[e $U 285  ]
+"62
+[e :U 283 ]
+[; ;controlMotors.c: 62: else if (direction==13){
+[e $ ! == _direction -> 13 `i 286  ]
+{
+[; ;controlMotors.c: 63: LATAbits.LA0=0;
+"63
+[e = . . _LATAbits 1 0 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 64: LATAbits.LA1=0;
+"64
+[e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
+"65
+}
+[e :U 286 ]
+"66
+[e :U 285 ]
+[e :U 282 ]
+[; ;controlMotors.c: 65: }
+[; ;controlMotors.c: 66: }
+[e :UE 279 ]
+}
+"69
 [v _setChamberEntrance `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;controlMotors.c: 51: void setChamberEntrance(int open){
+[; ;controlMotors.c: 69: void setChamberEntrance(int open){
 [e :U _setChamberEntrance ]
 [v _open `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;controlMotors.c: 52: if (open==11){
-"52
-[e $ ! == _open -> 11 `i 280  ]
-{
-"54
-[v _i `i ~T0 @X0 1 a ]
-[; ;controlMotors.c: 54: int i;
-[; ;controlMotors.c: 55: for (i=0;i<500;i++){
-"55
-{
-[e = _i -> 0 `i ]
-[e $ < _i -> 500 `i 281  ]
-[e $U 282  ]
-[e :U 281 ]
-{
-[; ;controlMotors.c: 56: LATDbits.LD3=1;
-"56
-[e = . . _LATDbits 1 3 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 57: _delay((unsigned long)((0.1*0.7)*(10000000/4000.0)));
-"57
-[e ( __delay (1 -> * * .0.1 .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;controlMotors.c: 58: LATDbits.LD3=0;
-"58
-[e = . . _LATDbits 1 3 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 59: _delay((unsigned long)((0.1*(20-0.7))*(10000000/4000.0)));
-"59
-[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
-"60
-}
-"55
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 500 `i 281  ]
-[e :U 282 ]
-"60
-}
-"61
-}
-[; ;controlMotors.c: 60: }
-[; ;controlMotors.c: 61: }
-[e $U 284  ]
-"62
-[e :U 280 ]
-[; ;controlMotors.c: 62: else if (open==10){
-[e $ ! == _open -> 10 `i 285  ]
-{
-"64
-[v _i `i ~T0 @X0 1 a ]
-[; ;controlMotors.c: 64: int i;
-[; ;controlMotors.c: 65: for (i=0;i<500;i++){
-"65
-{
-[e = _i -> 0 `i ]
-[e $ < _i -> 500 `i 286  ]
-[e $U 287  ]
-[e :U 286 ]
-{
-[; ;controlMotors.c: 66: LATDbits.LD3=1;
-"66
-[e = . . _LATDbits 1 3 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 67: _delay((unsigned long)((0.1*1.7)*(10000000/4000.0)));
-"67
-[e ( __delay (1 -> * * .0.1 .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;controlMotors.c: 68: LATDbits.LD3=0;
-"68
-[e = . . _LATDbits 1 3 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 69: _delay((unsigned long)((0.1*(20-1.7))*(10000000/4000.0)));
-"69
-[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;controlMotors.c: 70: if (open==11){
 "70
-}
-"65
-[e ++ _i -> 1 `i ]
-[e $ < _i -> 500 `i 286  ]
-[e :U 287 ]
-"70
-}
-"71
-}
-[e :U 285 ]
+[e $ ! == _open -> 11 `i 288  ]
+{
 "72
-[e :U 284 ]
-[; ;controlMotors.c: 70: }
-[; ;controlMotors.c: 71: }
-[; ;controlMotors.c: 72: }
-[e :UE 279 ]
-}
+[v _i `i ~T0 @X0 1 a ]
+[; ;controlMotors.c: 72: int i;
+[; ;controlMotors.c: 73: for (i=0;i<500;i++){
+"73
+{
+[e = _i -> 0 `i ]
+[e $ < _i -> 500 `i 289  ]
+[e $U 290  ]
+[e :U 289 ]
+{
+[; ;controlMotors.c: 74: LATAbits.LA2=1;
+"74
+[e = . . _LATAbits 1 2 -> -> 1 `i `uc ]
+[; ;controlMotors.c: 75: _delay((unsigned long)((0.1*0.7)*(10000000/4000.0)));
 "75
-[v _setChamberExit `(v ~T0 @X0 1 ef1`i ]
-{
-[; ;controlMotors.c: 75: void setChamberExit(int open){
-[e :U _setChamberExit ]
-[v _open `i ~T0 @X0 1 r1 ]
-[f ]
-[; ;controlMotors.c: 76: if (open==11){
+[e ( __delay (1 -> * * .0.1 .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;controlMotors.c: 76: LATAbits.LA2=0;
 "76
-[e $ ! == _open -> 11 `i 290  ]
-{
+[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 77: _delay((unsigned long)((0.1*(20-0.7))*(10000000/4000.0)));
+"77
+[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+"78
+}
+"73
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 500 `i 289  ]
+[e :U 290 ]
+"78
+}
 "79
 }
+[; ;controlMotors.c: 78: }
 [; ;controlMotors.c: 79: }
-[e $U 291  ]
+[e $U 292  ]
 "80
-[e :U 290 ]
+[e :U 288 ]
 [; ;controlMotors.c: 80: else if (open==10){
-[e $ ! == _open -> 10 `i 292  ]
+[e $ ! == _open -> 10 `i 293  ]
 {
-"83
-}
-[e :U 292 ]
-"84
-[e :U 291 ]
-[; ;controlMotors.c: 83: }
-[; ;controlMotors.c: 84: }
-[e :UE 289 ]
-}
-"87
-[v _transferToContainer `(v ~T0 @X0 1 ef ]
-{
-[; ;controlMotors.c: 87: void transferToContainer(){
-[e :U _transferToContainer ]
-[f ]
-[; ;controlMotors.c: 90: LATCbits.LC0=0; ;
-"90
-[e = . . _LATCbits 1 0 -> -> 0 `i `uc ]
-"91
+"82
 [v _i `i ~T0 @X0 1 a ]
-[; ;controlMotors.c: 91: int i;
-[; ;controlMotors.c: 92: for (i=0;i<4096;i++){
-"92
+[; ;controlMotors.c: 82: int i;
+[; ;controlMotors.c: 83: for (i=0;i<500;i++){
+"83
 {
 [e = _i -> 0 `i ]
-[e $ < _i -> 4096 `i 294  ]
+[e $ < _i -> 500 `i 294  ]
 [e $U 295  ]
 [e :U 294 ]
 {
-[; ;controlMotors.c: 93: LATCbits.LC1=1;
-"93
-[e = . . _LATCbits 1 1 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 94: _delay((unsigned long)((100*0.001)*(10000000/4000.0)));
-"94
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.001 / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;controlMotors.c: 95: LATCbits.LC1=0;
-"95
-[e = . . _LATCbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 96: _delay((unsigned long)((100*0.001)*(10000000/4000.0)));
-"96
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.001 / -> -> 10000000 `l `d .4000.0 `ul ]
-"97
+[; ;controlMotors.c: 84: LATAbits.LA2=1;
+"84
+[e = . . _LATAbits 1 2 -> -> 1 `i `uc ]
+[; ;controlMotors.c: 85: _delay((unsigned long)((0.1*1.7)*(10000000/4000.0)));
+"85
+[e ( __delay (1 -> * * .0.1 .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;controlMotors.c: 86: LATAbits.LA2=0;
+"86
+[e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
+[; ;controlMotors.c: 87: _delay((unsigned long)((0.1*(20-1.7))*(10000000/4000.0)));
+"87
+[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+"88
 }
-"92
+"83
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 4096 `i 294  ]
+[e $ < _i -> 500 `i 294  ]
 [e :U 295 ]
+"88
+}
+"89
+}
+[e :U 293 ]
+"90
+[e :U 292 ]
+[; ;controlMotors.c: 88: }
+[; ;controlMotors.c: 89: }
+[; ;controlMotors.c: 90: }
+[e :UE 287 ]
+}
+"93
+[v _setChamberExit `(v ~T0 @X0 1 ef1`i ]
+{
+[; ;controlMotors.c: 93: void setChamberExit(int open){
+[e :U _setChamberExit ]
+[v _open `i ~T0 @X0 1 r1 ]
+[f ]
+[; ;controlMotors.c: 94: if (open==11){
+"94
+[e $ ! == _open -> 11 `i 298  ]
+{
 "97
 }
 [; ;controlMotors.c: 97: }
-[; ;controlMotors.c: 98: }
+[e $U 299  ]
 "98
-[e :UE 293 ]
+[e :U 298 ]
+[; ;controlMotors.c: 98: else if (open==10){
+[e $ ! == _open -> 10 `i 300  ]
+{
+"101
+}
+[e :U 300 ]
+"102
+[e :U 299 ]
+[; ;controlMotors.c: 101: }
+[; ;controlMotors.c: 102: }
+[e :UE 297 ]
+}
+"105
+[v _rotateContainers `(v ~T0 @X0 1 ef ]
+{
+[; ;controlMotors.c: 105: void rotateContainers(){
+[e :U _rotateContainers ]
+[f ]
+"106
+[v _containerPos `i ~T0 @X0 1 a ]
+[; ;controlMotors.c: 106: int containerPos;
+[; ;controlMotors.c: 107: if (detectedBottle == 14){
+"107
+[e $ ! == _detectedBottle -> 14 `i 302  ]
+{
+[; ;controlMotors.c: 108: containerPos = eskaCapPos;
+"108
+[e = _containerPos _eskaCapPos ]
+"109
+}
+[; ;controlMotors.c: 109: }
+[e $U 303  ]
+"110
+[e :U 302 ]
+[; ;controlMotors.c: 110: else if (detectedBottle == 15){
+[e $ ! == _detectedBottle -> 15 `i 304  ]
+{
+[; ;controlMotors.c: 111: containerPos = eskaNoCapPos;
+"111
+[e = _containerPos _eskaNoCapPos ]
+"112
+}
+[; ;controlMotors.c: 112: }
+[e $U 305  ]
+"113
+[e :U 304 ]
+[; ;controlMotors.c: 113: else if (detectedBottle == 16){
+[e $ ! == _detectedBottle -> 16 `i 306  ]
+{
+[; ;controlMotors.c: 114: containerPos = yopCapPos;
+"114
+[e = _containerPos _yopCapPos ]
+"115
+}
+[; ;controlMotors.c: 115: }
+[e $U 307  ]
+"116
+[e :U 306 ]
+[; ;controlMotors.c: 116: else if (detectedBottle == 17){
+[e $ ! == _detectedBottle -> 17 `i 308  ]
+{
+[; ;controlMotors.c: 117: containerPos = yopNoCapPos;
+"117
+[e = _containerPos _yopNoCapPos ]
+"118
+}
+[e :U 308 ]
+"120
+[e :U 307 ]
+[e :U 305 ]
+[e :U 303 ]
+[; ;controlMotors.c: 118: }
+[; ;controlMotors.c: 120: if (containerPos==0){
+[e $ ! == _containerPos -> 0 `i 309  ]
+{
+"122
+}
+[; ;controlMotors.c: 122: }
+[e $U 310  ]
+"123
+[e :U 309 ]
+[; ;controlMotors.c: 123: else if (containerPos == 90){
+[e $ ! == _containerPos -> 90 `i 311  ]
+{
+[; ;controlMotors.c: 124: rotateStepperMotor(90, 360, 9);
+"124
+[e ( _rotateStepperMotor (3 , , -> 90 `i -> 360 `i -> 9 `i ]
+[; ;controlMotors.c: 125: eskaCapPos=(eskaCapPos+270)%360;
+"125
+[e = _eskaCapPos % + _eskaCapPos -> 270 `i -> 360 `i ]
+[; ;controlMotors.c: 126: eskaNoCapPos=(eskaNoCapPos+270)%360;
+"126
+[e = _eskaNoCapPos % + _eskaNoCapPos -> 270 `i -> 360 `i ]
+[; ;controlMotors.c: 127: yopCapPos=(yopCapPos+270)%360;
+"127
+[e = _yopCapPos % + _yopCapPos -> 270 `i -> 360 `i ]
+[; ;controlMotors.c: 128: yopNoCapPos=(yopNoCapPos+270)%360;
+"128
+[e = _yopNoCapPos % + _yopNoCapPos -> 270 `i -> 360 `i ]
+"129
+}
+[; ;controlMotors.c: 129: }
+[e $U 312  ]
+"130
+[e :U 311 ]
+[; ;controlMotors.c: 130: else if (containerPos == 180){
+[e $ ! == _containerPos -> 180 `i 313  ]
+{
+[; ;controlMotors.c: 131: rotateStepperMotor(180, 360, 9);
+"131
+[e ( _rotateStepperMotor (3 , , -> 180 `i -> 360 `i -> 9 `i ]
+[; ;controlMotors.c: 132: eskaCapPos=(eskaCapPos+180)%360;
+"132
+[e = _eskaCapPos % + _eskaCapPos -> 180 `i -> 360 `i ]
+[; ;controlMotors.c: 133: eskaNoCapPos=(eskaNoCapPos+180)%360;
+"133
+[e = _eskaNoCapPos % + _eskaNoCapPos -> 180 `i -> 360 `i ]
+[; ;controlMotors.c: 134: yopCapPos=(yopCapPos+180)%360;
+"134
+[e = _yopCapPos % + _yopCapPos -> 180 `i -> 360 `i ]
+[; ;controlMotors.c: 135: yopNoCapPos=(yopNoCapPos+180)%360;
+"135
+[e = _yopNoCapPos % + _yopNoCapPos -> 180 `i -> 360 `i ]
+"136
+}
+[; ;controlMotors.c: 136: }
+[e $U 314  ]
+"137
+[e :U 313 ]
+[; ;controlMotors.c: 137: else if (containerPos == 270){
+[e $ ! == _containerPos -> 270 `i 315  ]
+{
+[; ;controlMotors.c: 138: rotateStepperMotor(90, 360, 8);
+"138
+[e ( _rotateStepperMotor (3 , , -> 90 `i -> 360 `i -> 8 `i ]
+[; ;controlMotors.c: 139: eskaCapPos=(eskaCapPos+90)%360;
+"139
+[e = _eskaCapPos % + _eskaCapPos -> 90 `i -> 360 `i ]
+[; ;controlMotors.c: 140: eskaNoCapPos=(eskaNoCapPos+90)%360;
+"140
+[e = _eskaNoCapPos % + _eskaNoCapPos -> 90 `i -> 360 `i ]
+[; ;controlMotors.c: 141: yopCapPos=(yopCapPos+90)%360;
+"141
+[e = _yopCapPos % + _yopCapPos -> 90 `i -> 360 `i ]
+[; ;controlMotors.c: 142: yopNoCapPos=(yopNoCapPos+90)%360;
+"142
+[e = _yopNoCapPos % + _yopNoCapPos -> 90 `i -> 360 `i ]
+"143
+}
+[e :U 315 ]
+"144
+[e :U 314 ]
+[e :U 312 ]
+[e :U 310 ]
+[; ;controlMotors.c: 143: }
+[; ;controlMotors.c: 144: }
+[e :UE 301 ]
 }

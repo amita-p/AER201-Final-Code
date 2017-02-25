@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/LCD.c</file>
             <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/main.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/controlMotors.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/configBits.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/LCD.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/LCD.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/I2C.h</file>
         </group>
     </open-files>
 </project-private>

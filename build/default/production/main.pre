@@ -3781,6 +3781,15 @@ int numYopNoCap;
 int numYopCap;
 int numSeconds;
 
+
+int eskaNoCapPos;
+int eskaCapPos;
+int yopNoCapPos;
+int yopCapPos;
+
+
+int detectedBottle;
+
 # 3 "I2C.h"
 void I2C_Master_Init(const unsigned long c);
 void I2C_Master_Write(unsigned d);
@@ -3798,17 +3807,21 @@ void setChamberEntrance(int open);
 void setChamberExit(int open);
 void transferToContainer();
 
-# 36 "main.c"
+# 45 "main.c"
 void main(void) {
 
 
 TRISA = 0x00;
 TRISC = 0x00;
 TRISD = 0x00;
+TRISE = 0x00;
 TRISB = 0xFF;
+
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
+LATE = 0b111;
+
 ADCON1 = 0xFF;
 
 initLCD();
@@ -3830,23 +3843,63 @@ numYopCap = 0;
 numSeconds = 0;
 
 
-transferToContainer();
+eskaNoCapPos = 270;
+eskaCapPos = 0;
+yopNoCapPos = 180;
+yopCapPos = 90;
+
+
+
+setChamberEntrance(11);
+setChamberExit(10);
+
+
+T0CONbits.T08BIT = 1;
+T0CONbits.T0CS = 0;
+T0CONbits.PSA = 0;
+T0CONbits.T0PS2=1;
+T0CONbits.T0PS1=1;
+T0CONbits.T0PS0=1;
+T0CONbits.TMR0ON = 1;
 
 while(1){
+LATCbits.LC0=1;
+_delay((unsigned long)((1000)*(10000000/4000.0)));
+LATCbits.LC0=0;
+_delay((unsigned long)((1000)*(10000000/4000.0)));
 }
+
 
 
 while(1){
 (INTCONbits.GIE = 0);
 (INTCONbits.GIE = 1);
-
-# 92
+if (machineState==2){
+setChamberEntrance(11);
+setLaserEmitter(12);
+setUpperDiscRotation(12);
+if (bottleComing()){
+setFanRotation(9);
+numBottles++;
+_delay((unsigned long)((0)*(10000000/4000.0)));
+setChamberEntrance(10);
+detectBottle();
+rotateContainers();
+setChamberExit(11);
+_delay((unsigned long)((0)*(10000000/4000.0)));
+setChamberExit(10);
+}
+else{
+setFanRotation(8);
+}
+}
 }
 return;
 }
 
 
 void interrupt keypressed(void) {
+
 if(INT1IF){
 int keypress = (PORTB & 0xF0) >> 4;
 dispCorrectScreen(keypress);

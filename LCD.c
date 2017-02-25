@@ -6,6 +6,7 @@
 #include "macros.h"
 
 
+
 void initLCD(void) {
     __delay_ms(15);
     lcdInst(0b00110011);
