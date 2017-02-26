@@ -13,7 +13,7 @@ int numEskaNoCap;
 int numEskaCap; 
 int numYopNoCap;
 int numYopCap;
-int numSeconds; //number of seconds since operation started
+volatile double numSeconds; //number of seconds since operation started
 
 //tracks the current angular position of the containers (clockwise from the chamber exit)
 int eskaNoCapPos;
@@ -23,6 +23,9 @@ int yopCapPos;
 
 //detected bottle
 int detectedBottle;
+
+//stores the last value of numSeconds when a bottle was coming into the chamber
+double lastTimeBottleCame;
 
 #endif	/* MACHINESTATES_H */
 

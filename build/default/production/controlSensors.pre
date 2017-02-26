@@ -3779,7 +3779,7 @@ int numEskaNoCap;
 int numEskaCap;
 int numYopNoCap;
 int numYopCap;
-int numSeconds;
+volatile double numSeconds;
 
 
 int eskaNoCapPos;
@@ -3794,9 +3794,9 @@ int detectedBottle;
 int getDistance (int ULTRASONIC_SENSOR){
 if (ULTRASONIC_SENSOR == 18){
 LATCbits.LC2 = 0;
-_delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
 LATCbits.LC2 = 1;
-_delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
 LATCbits.LC2=0;
 while (LATCbits.LC3==0){
 
@@ -3808,23 +3808,24 @@ return 0;
 }
 if (ULTRASONIC_SENSOR == 19){
 LATCbits.LC4 = 0;
-_delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
 LATCbits.LC4 = 1;
-_delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
 LATCbits.LC4=0;
 while (LATCbits.LC5==0){
 
 }
+int counter;
 while (LATCbits.LC5==1){
-
+counter++;
 }
-return 0;
+return counter;
 }
 if (ULTRASONIC_SENSOR == 20){
 LATCbits.LC6 = 0;
-_delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
 LATCbits.LC6 = 1;
-_delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
+_delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
 LATCbits.LC6=0;
 while (LATCbits.LC7==0){
 
@@ -3850,7 +3851,7 @@ int laserDetected(){
 return LATCbits.LC1;
 }
 
-# 73
+# 74
 int bottleComing(){
 if (getDistance(19) > 0){
 return 1;

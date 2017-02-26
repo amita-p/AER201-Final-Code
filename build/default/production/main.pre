@@ -3779,7 +3779,7 @@ int numEskaNoCap;
 int numEskaCap;
 int numYopNoCap;
 int numYopCap;
-int numSeconds;
+volatile double numSeconds;
 
 
 int eskaNoCapPos;
@@ -3807,7 +3807,41 @@ void setChamberEntrance(int open);
 void setChamberExit(int open);
 void transferToContainer();
 
-# 45 "main.c"
+# 14 "/opt/microchip/xc8/v1.40/include/string.h"
+extern void * memcpy(void *, const void *, size_t);
+extern void * memmove(void *, const void *, size_t);
+extern void * memset(void *, int, size_t);
+
+# 34
+extern char * strcat(char *, const char *);
+extern char * strcpy(char *, const char *);
+extern char * strncat(char *, const char *, size_t);
+extern char * strncpy(char *, const char *, size_t);
+extern char * strdup(const char *);
+extern char * strtok(char *, const char *);
+
+
+extern int memcmp(const void *, const void *, size_t);
+extern int strcmp(const char *, const char *);
+extern int stricmp(const char *, const char *);
+extern int strncmp(const char *, const char *, size_t);
+extern int strnicmp(const char *, const char *, size_t);
+extern void * memchr(const void *, int, size_t);
+extern size_t strcspn(const char *, const char *);
+extern char * strpbrk(const char *, const char *);
+extern size_t strspn(const char *, const char *);
+extern char * strstr(const char *, const char *);
+extern char * stristr(const char *, const char *);
+extern char * strerror(int);
+extern size_t strlen(const char *);
+extern char * strchr(const char *, int);
+extern char * strichr(const char *, int);
+extern char * strrchr(const char *, int);
+extern char * strrichr(const char *, int);
+
+# 44 "main.c"
+unsigned long bres;
+
 void main(void) {
 
 
@@ -3820,7 +3854,6 @@ TRISB = 0xFF;
 LATA = 0x00;
 LATB = 0x00;
 LATC = 0x00;
-LATE = 0b111;
 
 ADCON1 = 0xFF;
 
@@ -3858,17 +3891,21 @@ T0CONbits.T08BIT = 1;
 T0CONbits.T0CS = 0;
 T0CONbits.PSA = 0;
 T0CONbits.T0PS2=1;
-T0CONbits.T0PS1=1;
+T0CONbits.T0PS1=0;
 T0CONbits.T0PS0=1;
-T0CONbits.TMR0ON = 1;
+TMR0IE=1;
+
+
 
 while(1){
+if (numSeconds>=10){
 LATCbits.LC0=1;
-_delay((unsigned long)((1000)*(10000000/4000.0)));
-LATCbits.LC0=0;
-_delay((unsigned long)((1000)*(10000000/4000.0)));
 }
-
+LATCbits.LC1=1;
+_delay((unsigned long)((1000)*(1000000/4000.0)));
+LATCbits.LC1=0;
+_delay((unsigned long)((1000)*(1000000/4000.0)));
+}
 
 
 while(1){
@@ -3881,12 +3918,12 @@ setUpperDiscRotation(12);
 if (bottleComing()){
 setFanRotation(9);
 numBottles++;
-_delay((unsigned long)((0)*(10000000/4000.0)));
+_delay((unsigned long)((0)*(1000000/4000.0)));
 setChamberEntrance(10);
 detectBottle();
 rotateContainers();
 setChamberExit(11);
-_delay((unsigned long)((0)*(10000000/4000.0)));
+_delay((unsigned long)((0)*(1000000/4000.0)));
 setChamberExit(10);
 }
 else{
@@ -3903,7 +3940,13 @@ void interrupt keypressed(void) {
 if(INT1IF){
 int keypress = (PORTB & 0xF0) >> 4;
 dispCorrectScreen(keypress);
+
 INT1IF = 0;
+}
+
+if(TMR0IF){
+numSeconds+=0.065536;
+TMR0IF=0;
 }
 }
 

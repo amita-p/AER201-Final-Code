@@ -2824,8 +2824,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _numYopCap `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 15: int numYopCap;
 "16
-[v _numSeconds `i ~T0 @X0 1 e ]
-[; ;machineStates.h: 16: int numSeconds;
+[v _numSeconds `Vd ~T0 @X0 1 e ]
+[; ;machineStates.h: 16: volatile double numSeconds;
 "19
 [v _eskaNoCapPos `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 19: int eskaNoCapPos;
@@ -2855,15 +2855,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlSensors.c: 12: LATCbits.LC2 = 0;
 "12
 [e = . . _LATCbits 1 2 -> -> 0 `i `uc ]
-[; ;controlSensors.c: 13: _delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+[; ;controlSensors.c: 13: _delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
 "13
-[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlSensors.c: 14: LATCbits.LC2 = 1;
 "14
 [e = . . _LATCbits 1 2 -> -> 1 `i `uc ]
-[; ;controlSensors.c: 15: _delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
+[; ;controlSensors.c: 15: _delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
 "15
-[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlSensors.c: 16: LATCbits.LC2=0;
 "16
 [e = . . _LATCbits 1 2 -> -> 0 `i `uc ]
@@ -2906,15 +2906,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlSensors.c: 26: LATCbits.LC4 = 0;
 "26
 [e = . . _LATCbits 1 4 -> -> 0 `i `uc ]
-[; ;controlSensors.c: 27: _delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+[; ;controlSensors.c: 27: _delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
 "27
-[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlSensors.c: 28: LATCbits.LC4 = 1;
 "28
 [e = . . _LATCbits 1 4 -> -> 1 `i `uc ]
-[; ;controlSensors.c: 29: _delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
+[; ;controlSensors.c: 29: _delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
 "29
-[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlSensors.c: 30: LATCbits.LC4=0;
 "30
 [e = . . _LATCbits 1 4 -> -> 0 `i `uc ]
@@ -2929,241 +2929,247 @@ Version 3.2 HI-TECH Software Intermediate Code
 "31
 [e $ == -> . . _LATCbits 1 5 `i -> 0 `i 276  ]
 [e :U 277 ]
-[; ;controlSensors.c: 33: }
-[; ;controlSensors.c: 34: while (LATCbits.LC5==1){
 "34
+[v _counter `i ~T0 @X0 1 a ]
+[; ;controlSensors.c: 33: }
+[; ;controlSensors.c: 34: int counter;
+[; ;controlSensors.c: 35: while (LATCbits.LC5==1){
+"35
 [e $U 278  ]
 [e :U 279 ]
 {
+[; ;controlSensors.c: 36: counter++;
 "36
+[e ++ _counter -> 1 `i ]
+"37
 }
 [e :U 278 ]
-"34
+"35
 [e $ == -> . . _LATCbits 1 5 `i -> 1 `i 279  ]
 [e :U 280 ]
-[; ;controlSensors.c: 36: }
-[; ;controlSensors.c: 37: return 0;
-"37
-[e ) -> 0 `i ]
-[e $UE 266  ]
+[; ;controlSensors.c: 37: }
+[; ;controlSensors.c: 38: return counter;
 "38
+[e ) _counter ]
+[e $UE 266  ]
+"39
 }
 [e :U 274 ]
-[; ;controlSensors.c: 38: }
-[; ;controlSensors.c: 39: if (ULTRASONIC_SENSOR == 20){
-"39
+[; ;controlSensors.c: 39: }
+[; ;controlSensors.c: 40: if (ULTRASONIC_SENSOR == 20){
+"40
 [e $ ! == _ULTRASONIC_SENSOR -> 20 `i 281  ]
 {
-[; ;controlSensors.c: 40: LATCbits.LC6 = 0;
-"40
-[e = . . _LATCbits 1 6 -> -> 0 `i `uc ]
-[; ;controlSensors.c: 41: _delay((unsigned long)((0.0001*2)*(10000000/4000.0)));
+[; ;controlSensors.c: 41: LATCbits.LC6 = 0;
 "41
-[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;controlSensors.c: 42: LATCbits.LC6 = 1;
-"42
-[e = . . _LATCbits 1 6 -> -> 1 `i `uc ]
-[; ;controlSensors.c: 43: _delay((unsigned long)((0.0001*10)*(10000000/4000.0)));
-"43
-[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;controlSensors.c: 44: LATCbits.LC6=0;
-"44
 [e = . . _LATCbits 1 6 -> -> 0 `i `uc ]
-[; ;controlSensors.c: 45: while (LATCbits.LC7==0){
+[; ;controlSensors.c: 42: _delay((unsigned long)((0.0001*2)*(1000000/4000.0)));
+"42
+[e ( __delay (1 -> * * .0.0001 -> -> 2 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+[; ;controlSensors.c: 43: LATCbits.LC6 = 1;
+"43
+[e = . . _LATCbits 1 6 -> -> 1 `i `uc ]
+[; ;controlSensors.c: 44: _delay((unsigned long)((0.0001*10)*(1000000/4000.0)));
+"44
+[e ( __delay (1 -> * * .0.0001 -> -> 10 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+[; ;controlSensors.c: 45: LATCbits.LC6=0;
 "45
+[e = . . _LATCbits 1 6 -> -> 0 `i `uc ]
+[; ;controlSensors.c: 46: while (LATCbits.LC7==0){
+"46
 [e $U 282  ]
 [e :U 283 ]
 {
-"47
+"48
 }
 [e :U 282 ]
-"45
+"46
 [e $ == -> . . _LATCbits 1 7 `i -> 0 `i 283  ]
 [e :U 284 ]
-[; ;controlSensors.c: 47: }
-[; ;controlSensors.c: 48: while (LATCbits.LC7==1){
-"48
+[; ;controlSensors.c: 48: }
+[; ;controlSensors.c: 49: while (LATCbits.LC7==1){
+"49
 [e $U 285  ]
 [e :U 286 ]
 {
-"50
+"51
 }
 [e :U 285 ]
-"48
+"49
 [e $ == -> . . _LATCbits 1 7 `i -> 1 `i 286  ]
 [e :U 287 ]
-[; ;controlSensors.c: 50: }
-[; ;controlSensors.c: 51: return 0;
-"51
+[; ;controlSensors.c: 51: }
+[; ;controlSensors.c: 52: return 0;
+"52
 [e ) -> 0 `i ]
 [e $UE 266  ]
-"52
+"53
 }
 [e :U 281 ]
-[; ;controlSensors.c: 52: }
 [; ;controlSensors.c: 53: }
-"53
+[; ;controlSensors.c: 54: }
+"54
 [e :UE 266 ]
 }
-"56
+"57
 [v _setLaserEmitter `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;controlSensors.c: 56: void setLaserEmitter(int emit){
+[; ;controlSensors.c: 57: void setLaserEmitter(int emit){
 [e :U _setLaserEmitter ]
 [v _emit `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;controlSensors.c: 57: if (emit == 12){
-"57
+[; ;controlSensors.c: 58: if (emit == 12){
+"58
 [e $ ! == _emit -> 12 `i 289  ]
 {
-[; ;controlSensors.c: 58: LATCbits.LC0 = 1;
-"58
-[e = . . _LATCbits 1 0 -> -> 1 `i `uc ]
+[; ;controlSensors.c: 59: LATCbits.LC0 = 1;
 "59
-}
-[; ;controlSensors.c: 59: }
-[e $U 290  ]
+[e = . . _LATCbits 1 0 -> -> 1 `i `uc ]
 "60
+}
+[; ;controlSensors.c: 60: }
+[e $U 290  ]
+"61
 [e :U 289 ]
-[; ;controlSensors.c: 60: else if (emit == 13){
+[; ;controlSensors.c: 61: else if (emit == 13){
 [e $ ! == _emit -> 13 `i 291  ]
 {
-[; ;controlSensors.c: 61: LATCbits.LC0 = 0;
-"61
-[e = . . _LATCbits 1 0 -> -> 0 `i `uc ]
+[; ;controlSensors.c: 62: LATCbits.LC0 = 0;
 "62
+[e = . . _LATCbits 1 0 -> -> 0 `i `uc ]
+"63
 }
 [e :U 291 ]
-"63
+"64
 [e :U 290 ]
-[; ;controlSensors.c: 62: }
 [; ;controlSensors.c: 63: }
+[; ;controlSensors.c: 64: }
 [e :UE 288 ]
 }
-"65
+"66
 [v _laserDetected `(i ~T0 @X0 1 ef ]
 {
-[; ;controlSensors.c: 65: int laserDetected(){
+[; ;controlSensors.c: 66: int laserDetected(){
 [e :U _laserDetected ]
 [f ]
-[; ;controlSensors.c: 66: return LATCbits.LC1;
-"66
+[; ;controlSensors.c: 67: return LATCbits.LC1;
+"67
 [e ) -> . . _LATCbits 1 1 `i ]
 [e $UE 292  ]
-[; ;controlSensors.c: 67: }
-"67
+[; ;controlSensors.c: 68: }
+"68
 [e :UE 292 ]
 }
-"73
+"74
 [v _bottleComing `(i ~T0 @X0 1 ef ]
 {
-[; ;controlSensors.c: 73: int bottleComing(){
+[; ;controlSensors.c: 74: int bottleComing(){
 [e :U _bottleComing ]
 [f ]
-[; ;controlSensors.c: 74: if (getDistance(19) > 0){
-"74
+[; ;controlSensors.c: 75: if (getDistance(19) > 0){
+"75
 [e $ ! > ( _getDistance (1 -> 19 `i -> 0 `i 294  ]
 {
-[; ;controlSensors.c: 75: return 1;
-"75
+[; ;controlSensors.c: 76: return 1;
+"76
 [e ) -> 1 `i ]
 [e $UE 293  ]
-"76
-}
-[; ;controlSensors.c: 76: }
-[e $U 295  ]
 "77
-[e :U 294 ]
-[; ;controlSensors.c: 77: else{
-{
-[; ;controlSensors.c: 78: return 0;
+}
+[; ;controlSensors.c: 77: }
+[e $U 295  ]
 "78
+[e :U 294 ]
+[; ;controlSensors.c: 78: else{
+{
+[; ;controlSensors.c: 79: return 0;
+"79
 [e ) -> 0 `i ]
 [e $UE 293  ]
-"79
+"80
 }
 [e :U 295 ]
-[; ;controlSensors.c: 79: }
-[; ;controlSensors.c: 81: }
-"81
+[; ;controlSensors.c: 80: }
+[; ;controlSensors.c: 82: }
+"82
 [e :UE 293 ]
 }
-"85
+"86
 [v _detectBottle `(v ~T0 @X0 1 ef ]
 {
-[; ;controlSensors.c: 85: void detectBottle(){
+[; ;controlSensors.c: 86: void detectBottle(){
 [e :U _detectBottle ]
 [f ]
-"86
-[v _noCap `i ~T0 @X0 1 a ]
-[; ;controlSensors.c: 86: int noCap = 0;
-[e = _noCap -> 0 `i ]
 "87
-[v _transparent `i ~T0 @X0 1 a ]
-[; ;controlSensors.c: 87: int transparent = laserDetected();
-[e = _transparent ( _laserDetected ..  ]
-[; ;controlSensors.c: 88: if (getDistance(19) > 0 || getDistance(20) > 0){
+[v _noCap `i ~T0 @X0 1 a ]
+[; ;controlSensors.c: 87: int noCap = 0;
+[e = _noCap -> 0 `i ]
 "88
+[v _transparent `i ~T0 @X0 1 a ]
+[; ;controlSensors.c: 88: int transparent = laserDetected();
+[e = _transparent ( _laserDetected ..  ]
+[; ;controlSensors.c: 89: if (getDistance(19) > 0 || getDistance(20) > 0){
+"89
 [e $ ! || > ( _getDistance (1 -> 19 `i -> 0 `i > ( _getDistance (1 -> 20 `i -> 0 `i 297  ]
 {
-[; ;controlSensors.c: 89: noCap = 1;
-"89
-[e = _noCap -> 1 `i ]
+[; ;controlSensors.c: 90: noCap = 1;
 "90
+[e = _noCap -> 1 `i ]
+"91
 }
 [e :U 297 ]
-[; ;controlSensors.c: 90: }
-[; ;controlSensors.c: 91: if (transparent && noCap){
-"91
+[; ;controlSensors.c: 91: }
+[; ;controlSensors.c: 92: if (transparent && noCap){
+"92
 [e $ ! && != _transparent -> 0 `i != _noCap -> 0 `i 298  ]
 {
-[; ;controlSensors.c: 92: detectedBottle = 15;
-"92
-[e = _detectedBottle -> 15 `i ]
+[; ;controlSensors.c: 93: detectedBottle = 15;
 "93
-}
-[; ;controlSensors.c: 93: }
-[e $U 299  ]
+[e = _detectedBottle -> 15 `i ]
 "94
+}
+[; ;controlSensors.c: 94: }
+[e $U 299  ]
+"95
 [e :U 298 ]
-[; ;controlSensors.c: 94: else if (transparent && !noCap){
+[; ;controlSensors.c: 95: else if (transparent && !noCap){
 [e $ ! && != _transparent -> 0 `i ! != _noCap -> 0 `i 300  ]
 {
-[; ;controlSensors.c: 95: detectedBottle = 14;
-"95
-[e = _detectedBottle -> 14 `i ]
+[; ;controlSensors.c: 96: detectedBottle = 14;
 "96
-}
-[; ;controlSensors.c: 96: }
-[e $U 301  ]
+[e = _detectedBottle -> 14 `i ]
 "97
+}
+[; ;controlSensors.c: 97: }
+[e $U 301  ]
+"98
 [e :U 300 ]
-[; ;controlSensors.c: 97: else if (!transparent && noCap){
+[; ;controlSensors.c: 98: else if (!transparent && noCap){
 [e $ ! && ! != _transparent -> 0 `i != _noCap -> 0 `i 302  ]
 {
-[; ;controlSensors.c: 98: detectedBottle = 17;
-"98
-[e = _detectedBottle -> 17 `i ]
+[; ;controlSensors.c: 99: detectedBottle = 17;
 "99
-}
-[; ;controlSensors.c: 99: }
-[e $U 303  ]
+[e = _detectedBottle -> 17 `i ]
 "100
+}
+[; ;controlSensors.c: 100: }
+[e $U 303  ]
+"101
 [e :U 302 ]
-[; ;controlSensors.c: 100: else if (!transparent && !noCap){
+[; ;controlSensors.c: 101: else if (!transparent && !noCap){
 [e $ ! && ! != _transparent -> 0 `i ! != _noCap -> 0 `i 304  ]
 {
-[; ;controlSensors.c: 101: detectedBottle = 16;
-"101
-[e = _detectedBottle -> 16 `i ]
+[; ;controlSensors.c: 102: detectedBottle = 16;
 "102
+[e = _detectedBottle -> 16 `i ]
+"103
 }
 [e :U 304 ]
-"105
+"106
 [e :U 303 ]
 [e :U 301 ]
 [e :U 299 ]
-[; ;controlSensors.c: 102: }
-[; ;controlSensors.c: 105: }
+[; ;controlSensors.c: 103: }
+[; ;controlSensors.c: 106: }
 [e :UE 296 ]
 }

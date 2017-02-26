@@ -31,10 +31,11 @@ int getDistance (int ULTRASONIC_SENSOR){
         while (LATCbits.LC5==0){
             //wait for echo pin to go high
         }
+        int counter;
         while (LATCbits.LC5==1){
-            //start timing 
+            counter++; 
         }
-        return 0;
+        return counter;
     }
     if (ULTRASONIC_SENSOR == ULTRASONIC_SENSOR_3){
         LATCbits.LC6 = 0; //set trig pin to low
@@ -90,15 +91,19 @@ void detectBottle(){
     }
     if (transparent && noCap){
         detectedBottle = ESKANOCAP;
+        numEskaNoCap++;
     }
     else if (transparent && !noCap){
         detectedBottle = ESKACAP;
+        numEskaCap++;
     }
     else if (!transparent && noCap){
         detectedBottle = YOPNOCAP;
+        numYopNoCap++;
     }
     else if (!transparent && !noCap){
         detectedBottle = YOPCAP;
+        numYopCap++;
     }
     
     

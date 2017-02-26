@@ -3779,7 +3779,7 @@ int numEskaNoCap;
 int numEskaCap;
 int numYopNoCap;
 int numYopCap;
-int numSeconds;
+volatile double numSeconds;
 
 
 int eskaNoCapPos;
@@ -3792,14 +3792,14 @@ int detectedBottle;
 
 # 10 "LCD.c"
 void initLCD(void) {
-_delay((unsigned long)((15)*(10000000/4000.0)));
+_delay((unsigned long)((150)*(1000000/4000.0)));
 lcdInst(0b00110011);
 lcdInst(0b00110010);
 lcdInst(0b00101000);
 lcdInst(0b00001111);
 lcdInst(0b00000110);
 lcdInst(0b00000001);
-_delay((unsigned long)((15)*(10000000/4000.0)));
+_delay((unsigned long)((150)*(1000000/4000.0)));
 }
 
 void lcdInst(char data) {
@@ -3819,9 +3819,9 @@ LATD = LATD & 0x0F;
 LATD = temp | LATD;
 
 LATDbits.LATD3 = 0;
-_delay((unsigned long)((25)*(10000000/4000000.0)));
+_delay((unsigned long)((250)*(1000000/4000000.0)));
 LATDbits.LATD3 = 1;
-_delay((unsigned long)((25)*(10000000/4000000.0)));
+_delay((unsigned long)((250)*(1000000/4000000.0)));
 
 data = data << 4;
 
@@ -3830,9 +3830,9 @@ LATD = LATD & 0x0F;
 LATD = temp | LATD;
 
 LATDbits.LATD3 = 0;
-_delay((unsigned long)((25)*(10000000/4000000.0)));
+_delay((unsigned long)((250)*(1000000/4000000.0)));
 LATDbits.LATD3 = 1;
-_delay((unsigned long)((25)*(10000000/4000000.0)));
+_delay((unsigned long)((250)*(1000000/4000000.0)));
 }
 
 void lcdWrite(char *string1, char *string2){
@@ -3842,6 +3842,7 @@ lcdInst(0b11000000);
 printf(string2);
 lcdInst(0b1100);
 }
+
 
 void clearLCD(){
 lcdInst(0b01);
@@ -3874,7 +3875,7 @@ clearLCD();
 lcdWrite("TRANSFERRING...","");
 }
 
-# 97
+# 98
 void dispCorrectScreen(int key){
 
 if (key == 2 && machineState != 2){
@@ -3886,6 +3887,7 @@ if (key == 0){
 machineState = 2;
 dispSortingScreen();
 currentScreen = 4;
+T0CONbits.TMR0ON = 1;
 }
 else if (key == 1){
 dispLogsMenu();

@@ -20,7 +20,7 @@
 #define RS          LATDbits.LATD2          
 #define E           LATDbits.LATD3
 #define	LCD_PORT    LATD   //On LATD[4,7] to be specific
-#define LCD_DELAY   25
+#define LCD_DELAY   250
 
 //functions from LCD.c
 void initLCD(void);

@@ -8,14 +8,14 @@
 
 
 void initLCD(void) {
-    __delay_ms(15);
+    __delay_ms(150);
     lcdInst(0b00110011);
     lcdInst(0b00110010);
     lcdInst(0b00101000);
     lcdInst(0b00001111);
     lcdInst(0b00000110);
     lcdInst(0b00000001);
-    __delay_ms(15);
+    __delay_ms(150);
 }
 
 void lcdInst(char data) {
@@ -59,6 +59,7 @@ void lcdWrite(char *string1, char *string2){
     lcdInst(LCD_CURSOR_OFF);
 }
 
+
 void clearLCD(){
     lcdInst(LCD_CLEAR);
     lcdInst(LCD_CURSOR_BACK);
@@ -90,10 +91,15 @@ void dispDownloadToPCScreen(){
     lcdWrite("TRANSFERRING...","");
 }
 
+void dispTerminationScreen(){
+    clearLCD();
+    lcdWrite("TERMINATED","3: ESC");
+}
+
 //this function gets called whenever a key is pressed and is given the key which was pressed 
 //it displays the correct screen on the LCD in response to the key which was pressed
 //it updates the currentScreen variable
-//if "start" is selected, it updates the machineState variable to to SORTING
+//if "start" is selected, it updates the machineState variable to to SORTING and starts the timer
 void dispCorrectScreen(int key){
     //at any time, if 3 is pressed on the keypad, you go back to the main menu unless sorting is taking place
     if (key == 2 && machineState != SORTING){
@@ -105,6 +111,7 @@ void dispCorrectScreen(int key){
             machineState = SORTING;
             dispSortingScreen();
             currentScreen = SORTING_SCREEN;
+            T0CONbits.TMR0ON = 1; //turn on the timer
         }
         else if (key == 1){
             dispLogsMenu();

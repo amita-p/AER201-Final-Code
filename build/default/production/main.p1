@@ -16,8 +16,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _LATB `Vuc ~T0 @X0 0 e@3978 ]
 "1094
 [v _LATC `Vuc ~T0 @X0 0 e@3979 ]
-"1316
-[v _LATE `Vuc ~T0 @X0 0 e@3981 ]
 "4390
 [v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
 "26 LCD.h
@@ -55,6 +53,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S244 . . . ]
 "5803
 [v _T0CONbits `VS244 ~T0 @X0 0 e@4053 ]
+"7562
+[v _TMR0IE `Vb ~T0 @X0 0 e@32661 ]
 "1100
 [s S44 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S44 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
@@ -80,7 +80,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _setFanRotation `(v ~T0 @X0 0 ef1`i ]
 "7 controlSensors.h
 [v _detectBottle `(v ~T0 @X0 0 ef ]
-"121 main.c
+"125 main.c
 [v _rotateContainers `(i ~T0 @X0 0 ef ]
 "6898 /opt/microchip/xc8/v1.40/include/pic18f4620.h
 [v _INT1IF `Vb ~T0 @X0 0 e@32640 ]
@@ -88,6 +88,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _PORTB `Vuc ~T0 @X0 0 e@3969 ]
 "36 LCD.h
 [v _dispCorrectScreen `(v ~T0 @X0 0 ef1`i ]
+"7564 /opt/microchip/xc8/v1.40/include/pic18f4620.h
+[v _TMR0IF `Vb ~T0 @X0 0 e@32658 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -2898,8 +2900,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _numYopCap `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 15: int numYopCap;
 "16
-[v _numSeconds `i ~T0 @X0 1 e ]
-[; ;machineStates.h: 16: int numSeconds;
+[v _numSeconds `Vd ~T0 @X0 1 e ]
+[; ;machineStates.h: 16: volatile double numSeconds;
 "19
 [v _eskaNoCapPos `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 19: int eskaNoCapPos;
@@ -2926,39 +2928,65 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlMotors.h: 7: void setChamberEntrance(int open);
 [; ;controlMotors.h: 8: void setChamberExit(int open);
 [; ;controlMotors.h: 9: void transferToContainer();
-"45 main.c
+[; ;string.h: 14: extern void * memcpy(void *, const void *, size_t);
+[; ;string.h: 15: extern void * memmove(void *, const void *, size_t);
+[; ;string.h: 16: extern void * memset(void *, int, size_t);
+[; ;string.h: 34: extern char * strcat(char *, const char *);
+[; ;string.h: 35: extern char * strcpy(char *, const char *);
+[; ;string.h: 36: extern char * strncat(char *, const char *, size_t);
+[; ;string.h: 37: extern char * strncpy(char *, const char *, size_t);
+[; ;string.h: 38: extern char * strdup(const char *);
+[; ;string.h: 39: extern char * strtok(char *, const char *);
+[; ;string.h: 42: extern int memcmp(const void *, const void *, size_t);
+[; ;string.h: 43: extern int strcmp(const char *, const char *);
+[; ;string.h: 44: extern int stricmp(const char *, const char *);
+[; ;string.h: 45: extern int strncmp(const char *, const char *, size_t);
+[; ;string.h: 46: extern int strnicmp(const char *, const char *, size_t);
+[; ;string.h: 47: extern void * memchr(const void *, int, size_t);
+[; ;string.h: 48: extern size_t strcspn(const char *, const char *);
+[; ;string.h: 49: extern char * strpbrk(const char *, const char *);
+[; ;string.h: 50: extern size_t strspn(const char *, const char *);
+[; ;string.h: 51: extern char * strstr(const char *, const char *);
+[; ;string.h: 52: extern char * stristr(const char *, const char *);
+[; ;string.h: 53: extern char * strerror(int);
+[; ;string.h: 54: extern size_t strlen(const char *);
+[; ;string.h: 55: extern char * strchr(const char *, int);
+[; ;string.h: 56: extern char * strichr(const char *, int);
+[; ;string.h: 57: extern char * strrchr(const char *, int);
+[; ;string.h: 58: extern char * strrichr(const char *, int);
+"44 main.c
+[v _bres `ul ~T0 @X0 1 e ]
+[; ;main.c: 44: unsigned long bres;
+"46
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 45: void main(void) {
+[; ;main.c: 46: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 48: TRISA = 0x00;
-"48
-[e = _TRISA -> -> 0 `i `uc ]
-[; ;main.c: 49: TRISC = 0x00;
+[; ;main.c: 49: TRISA = 0x00;
 "49
-[e = _TRISC -> -> 0 `i `uc ]
-[; ;main.c: 50: TRISD = 0x00;
+[e = _TRISA -> -> 0 `i `uc ]
+[; ;main.c: 50: TRISC = 0x00;
 "50
-[e = _TRISD -> -> 0 `i `uc ]
-[; ;main.c: 51: TRISE = 0x00;
+[e = _TRISC -> -> 0 `i `uc ]
+[; ;main.c: 51: TRISD = 0x00;
 "51
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;main.c: 52: TRISB = 0xFF;
+[e = _TRISD -> -> 0 `i `uc ]
+[; ;main.c: 52: TRISE = 0x00;
 "52
+[e = _TRISE -> -> 0 `i `uc ]
+[; ;main.c: 53: TRISB = 0xFF;
+"53
 [e = _TRISB -> -> 255 `i `uc ]
-[; ;main.c: 54: LATA = 0x00;
-"54
-[e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 55: LATB = 0x00;
+[; ;main.c: 55: LATA = 0x00;
 "55
-[e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 56: LATC = 0x00;
+[e = _LATA -> -> 0 `i `uc ]
+[; ;main.c: 56: LATB = 0x00;
 "56
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 57: LATE = 0b111;
+[e = _LATB -> -> 0 `i `uc ]
+[; ;main.c: 57: LATC = 0x00;
 "57
-[e = _LATE -> -> 7 `i `uc ]
+[e = _LATC -> -> 0 `i `uc ]
 [; ;main.c: 59: ADCON1 = 0xFF;
 "59
 [e = _ADCON1 -> -> 255 `i `uc ]
@@ -2997,7 +3025,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _numYopCap -> 0 `i ]
 [; ;main.c: 77: numSeconds = 0;
 "77
-[e = _numSeconds -> 0 `i ]
+[e = _numSeconds -> -> 0 `i `d ]
 [; ;main.c: 80: eskaNoCapPos = 270;
 "80
 [e = _eskaNoCapPos -> 270 `i ]
@@ -3028,151 +3056,176 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 94: T0CONbits.T0PS2=1;
 "94
 [e = . . _T0CONbits 1 2 -> -> 1 `i `uc ]
-[; ;main.c: 95: T0CONbits.T0PS1=1;
+[; ;main.c: 95: T0CONbits.T0PS1=0;
 "95
-[e = . . _T0CONbits 1 1 -> -> 1 `i `uc ]
+[e = . . _T0CONbits 1 1 -> -> 0 `i `uc ]
 [; ;main.c: 96: T0CONbits.T0PS0=1;
 "96
 [e = . . _T0CONbits 1 0 -> -> 1 `i `uc ]
-[; ;main.c: 97: T0CONbits.TMR0ON = 1;
+[; ;main.c: 97: TMR0IE=1;
 "97
-[e = . . _T0CONbits 0 5 -> -> 1 `i `uc ]
-[; ;main.c: 99: while(1){
-"99
+[e = _TMR0IE -> -> 1 `i `b ]
+[; ;main.c: 101: while(1){
+"101
 [e :U 268 ]
 {
-[; ;main.c: 100: LATCbits.LC0=1;
-"100
-[e = . . _LATCbits 1 0 -> -> 1 `i `uc ]
-[; ;main.c: 101: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"101
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 102: LATCbits.LC0=0;
+[; ;main.c: 102: if (numSeconds>=10){
 "102
-[e = . . _LATCbits 1 0 -> -> 0 `i `uc ]
-[; ;main.c: 103: _delay((unsigned long)((1000)*(10000000/4000.0)));
+[e $ ! >= _numSeconds -> -> 10 `i `d 270  ]
+{
+[; ;main.c: 103: LATCbits.LC0=1;
 "103
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e = . . _LATCbits 1 0 -> -> 1 `i `uc ]
 "104
 }
+[e :U 270 ]
+[; ;main.c: 104: }
+[; ;main.c: 105: LATCbits.LC1=1;
+"105
+[e = . . _LATCbits 1 1 -> -> 1 `i `uc ]
+[; ;main.c: 106: _delay((unsigned long)((1000)*(1000000/4000.0)));
+"106
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+[; ;main.c: 107: LATCbits.LC1=0;
+"107
+[e = . . _LATCbits 1 1 -> -> 0 `i `uc ]
+[; ;main.c: 108: _delay((unsigned long)((1000)*(1000000/4000.0)));
+"108
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+"109
+}
 [e :U 267 ]
-"99
+"101
 [e $U 268  ]
 [e :U 269 ]
-[; ;main.c: 104: }
-[; ;main.c: 108: while(1){
-"108
-[e :U 271 ]
-{
-[; ;main.c: 109: (INTCONbits.GIE = 0);
-"109
-[e = . . _INTCONbits 1 7 -> -> 0 `i `uc ]
-[; ;main.c: 110: (INTCONbits.GIE = 1);
-"110
-[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
-[; ;main.c: 111: if (machineState==2){
-"111
-[e $ ! == _machineState -> 2 `i 273  ]
-{
-[; ;main.c: 112: setChamberEntrance(11);
+[; ;main.c: 109: }
+[; ;main.c: 112: while(1){
 "112
-[e ( _setChamberEntrance (1 -> 11 `i ]
-[; ;main.c: 113: setLaserEmitter(12);
+[e :U 272 ]
+{
+[; ;main.c: 113: (INTCONbits.GIE = 0);
 "113
-[e ( _setLaserEmitter (1 -> 12 `i ]
-[; ;main.c: 114: setUpperDiscRotation(12);
+[e = . . _INTCONbits 1 7 -> -> 0 `i `uc ]
+[; ;main.c: 114: (INTCONbits.GIE = 1);
 "114
-[e ( _setUpperDiscRotation (1 -> 12 `i ]
-[; ;main.c: 115: if (bottleComing()){
+[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
+[; ;main.c: 115: if (machineState==2){
 "115
-[e $ ! != ( _bottleComing ..  -> 0 `i 274  ]
+[e $ ! == _machineState -> 2 `i 274  ]
 {
-[; ;main.c: 116: setFanRotation(9);
+[; ;main.c: 116: setChamberEntrance(11);
 "116
-[e ( _setFanRotation (1 -> 9 `i ]
-[; ;main.c: 117: numBottles++;
+[e ( _setChamberEntrance (1 -> 11 `i ]
+[; ;main.c: 117: setLaserEmitter(12);
 "117
-[e ++ _numBottles -> 1 `i ]
-[; ;main.c: 118: _delay((unsigned long)((0)*(10000000/4000.0)));
+[e ( _setLaserEmitter (1 -> 12 `i ]
+[; ;main.c: 118: setUpperDiscRotation(12);
 "118
-[e ( __delay (1 -> * -> -> 0 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 119: setChamberEntrance(10);
+[e ( _setUpperDiscRotation (1 -> 12 `i ]
+[; ;main.c: 119: if (bottleComing()){
 "119
-[e ( _setChamberEntrance (1 -> 10 `i ]
-[; ;main.c: 120: detectBottle();
-"120
-[e ( _detectBottle ..  ]
-[; ;main.c: 121: rotateContainers();
-"121
-[e ( _rotateContainers ..  ]
-[; ;main.c: 122: setChamberExit(11);
-"122
-[e ( _setChamberExit (1 -> 11 `i ]
-[; ;main.c: 123: _delay((unsigned long)((0)*(10000000/4000.0)));
-"123
-[e ( __delay (1 -> * -> -> 0 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 124: setChamberExit(10);
-"124
-[e ( _setChamberExit (1 -> 10 `i ]
-"125
-}
-[; ;main.c: 125: }
-[e $U 275  ]
-"126
-[e :U 274 ]
-[; ;main.c: 126: else{
+[e $ ! != ( _bottleComing ..  -> 0 `i 275  ]
 {
-[; ;main.c: 127: setFanRotation(8);
+[; ;main.c: 120: setFanRotation(9);
+"120
+[e ( _setFanRotation (1 -> 9 `i ]
+[; ;main.c: 121: numBottles++;
+"121
+[e ++ _numBottles -> 1 `i ]
+[; ;main.c: 122: _delay((unsigned long)((0)*(1000000/4000.0)));
+"122
+[e ( __delay (1 -> * -> -> 0 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+[; ;main.c: 123: setChamberEntrance(10);
+"123
+[e ( _setChamberEntrance (1 -> 10 `i ]
+[; ;main.c: 124: detectBottle();
+"124
+[e ( _detectBottle ..  ]
+[; ;main.c: 125: rotateContainers();
+"125
+[e ( _rotateContainers ..  ]
+[; ;main.c: 126: setChamberExit(11);
+"126
+[e ( _setChamberExit (1 -> 11 `i ]
+[; ;main.c: 127: _delay((unsigned long)((0)*(1000000/4000.0)));
 "127
-[e ( _setFanRotation (1 -> 8 `i ]
+[e ( __delay (1 -> * -> -> 0 `i `d / -> -> 1000000 `l `d .4000.0 `ul ]
+[; ;main.c: 128: setChamberExit(10);
 "128
-}
-[e :U 275 ]
+[e ( _setChamberExit (1 -> 10 `i ]
 "129
 }
-[e :U 273 ]
-"130
-}
-[e :U 270 ]
-"108
-[e $U 271  ]
-[e :U 272 ]
-[; ;main.c: 128: }
 [; ;main.c: 129: }
-[; ;main.c: 130: }
-[; ;main.c: 131: return;
+[e $U 276  ]
+"130
+[e :U 275 ]
+[; ;main.c: 130: else{
+{
+[; ;main.c: 131: setFanRotation(8);
 "131
-[e $UE 266  ]
-[; ;main.c: 132: }
+[e ( _setFanRotation (1 -> 8 `i ]
 "132
+}
+[e :U 276 ]
+"133
+}
+[e :U 274 ]
+"134
+}
+[e :U 271 ]
+"112
+[e $U 272  ]
+[e :U 273 ]
+[; ;main.c: 132: }
+[; ;main.c: 133: }
+[; ;main.c: 134: }
+[; ;main.c: 135: return;
+"135
+[e $UE 266  ]
+[; ;main.c: 136: }
+"136
 [e :UE 266 ]
 }
-[v F3005 `(v ~T0 @X0 1 tf ]
-"135
-[v _keypressed `IF3005 ~T0 @X0 1 e ]
+[v F3090 `(v ~T0 @X0 1 tf ]
+"139
+[v _keypressed `IF3090 ~T0 @X0 1 e ]
 {
-[; ;main.c: 135: void interrupt keypressed(void) {
+[; ;main.c: 139: void interrupt keypressed(void) {
 [e :U _keypressed ]
 [f ]
-[; ;main.c: 137: if(INT1IF){
-"137
-[e $ ! _INT1IF 277  ]
-{
-"138
-[v _keypress `i ~T0 @X0 1 a ]
-[; ;main.c: 138: int keypress = (PORTB & 0xF0) >> 4;
-[e = _keypress >> & -> _PORTB `i -> 240 `i -> 4 `i ]
-[; ;main.c: 139: dispCorrectScreen(keypress);
-"139
-[e ( _dispCorrectScreen (1 _keypress ]
-[; ;main.c: 140: INT1IF = 0;
-"140
-[e = _INT1IF -> -> 0 `i `b ]
+[; ;main.c: 141: if(INT1IF){
 "141
-}
-[e :U 277 ]
-[; ;main.c: 141: }
-[; ;main.c: 142: }
+[e $ ! _INT1IF 278  ]
+{
 "142
-[e :UE 276 ]
+[v _keypress `i ~T0 @X0 1 a ]
+[; ;main.c: 142: int keypress = (PORTB & 0xF0) >> 4;
+[e = _keypress >> & -> _PORTB `i -> 240 `i -> 4 `i ]
+[; ;main.c: 143: dispCorrectScreen(keypress);
+"143
+[e ( _dispCorrectScreen (1 _keypress ]
+[; ;main.c: 145: INT1IF = 0;
+"145
+[e = _INT1IF -> -> 0 `i `b ]
+"146
+}
+[e :U 278 ]
+[; ;main.c: 146: }
+[; ;main.c: 148: if(TMR0IF){
+"148
+[e $ ! _TMR0IF 279  ]
+{
+[; ;main.c: 149: numSeconds+=0.065536;
+"149
+[e =+ _numSeconds .0.065536 ]
+[; ;main.c: 150: TMR0IF=0;
+"150
+[e = _TMR0IF -> -> 0 `i `b ]
+"151
+}
+[e :U 279 ]
+[; ;main.c: 151: }
+[; ;main.c: 152: }
+"152
+[e :UE 277 ]
 }

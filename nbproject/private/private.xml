@@ -3,12 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/main.c</file>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/controlMotors.c</file>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/configBits.h</file>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/LCD.c</file>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/LCD.h</file>
-            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code.X/I2C.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/macros.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/configBits.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/LCD.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/controlMotors.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/LCD.h</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/controlSensors.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/main.c</file>
+            <file>file:/home/amita/MPLABXProjects/AER201-Final-Code-2.X/machineStates.h</file>
         </group>
     </open-files>
 </project-private>

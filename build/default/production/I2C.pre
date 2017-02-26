@@ -3705,7 +3705,7 @@ void I2C_Master_Init(const unsigned long c)
 SSPSTAT = 0b00000000;
 SSPCON1 = 0b00101000;
 SSPCON2 = 0b00000000;
-SSPADD = (10000000/(4*c))-1;
+SSPADD = (1000000/(4*c))-1;
 TRISC3 = 1;
 TRISC4 = 1;
 }
@@ -3754,6 +3754,6 @@ return temp;
 
 void delay_10ms(unsigned char n) {
 while (n-- != 0) {
-_delay((unsigned long)((5)*(10000000/4000.0)));
+_delay((unsigned long)((5)*(1000000/4000.0)));
 }
 }

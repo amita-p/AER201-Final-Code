@@ -43,8 +43,11 @@
 //angular speed, degrees/second
 #define CONTAINER_ROTATION_SPEED 360
 
-
+//4096 is the number of steps for a full rotation for the stepper motor (used for rotating the containers)
 #define FULL_ROTATION_NUM_STEPS 4096
+
+//Maximum number of seconds the machine will wait for a bottle to be sensed by ultrasonic distance sensor #1 (since it was last sensed)
+#define MAX_BOTTLE_WAIT_TIME 0
 
 #define BOTTLE_FALL_IN_CHAMBER 0 //number of seconds for bottle to fall into chamber since door opens
 #define BOTTLE_FALL_IN_CONTAINER 0 //number of seconds for bottle to fall out of chamber and into container 

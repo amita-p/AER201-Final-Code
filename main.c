@@ -14,6 +14,7 @@
 #include "macros.h"
 #include "controlSensors.h"
 #include "controlMotors.h"
+#include <string.h>
 
 
 
@@ -35,11 +36,6 @@
  * C6:C7 = ultrasonic distance sensor #3 (on the exit of the chamber), 6 = trig, 7 = echo
  */
 
-/*
- * THINGS TO NOTE:
- * __delay_ms(0.1 * number of milliseconds)
- * __delay_ms(100 * number of seconds)  
- */
 
 
 void main(void) {
@@ -54,7 +50,6 @@ void main(void) {
     LATA = 0x00; 
     LATB = 0x00; 
     LATC = 0x00;
-    LATE = 0b111;
     
     ADCON1 = 0xFF;  //Set PORTB to be digital instead of analog default
     
@@ -87,22 +82,26 @@ void main(void) {
     setChamberEntrance(OPEN); 
     setChamberExit(CLOSED);
     
-    
+    //setting TIMER0 module
     T0CONbits.T08BIT = 1; //use 8 bit timer/counter
     T0CONbits.T0CS = 0; //timer mode
-    T0CONbits.PSA = 0;
-    T0CONbits.T0PS2=1; //extend increment time period
-    T0CONbits.T0PS1=1;
+    T0CONbits.PSA = 0; //enable extension thing
+    T0CONbits.T0PS2=1; //increments every 64 cycles
+    T0CONbits.T0PS1=0; 
     T0CONbits.T0PS0=1;
-    T0CONbits.TMR0ON = 1; //turn on the timer
-      
+    TMR0IE=1; //enable TMR0 interrupt for TIMER0 module
+    
+    
+
     while(1){
-        LATCbits.LC0=1;
+        if (numSeconds>=10){
+            LATCbits.LC0=1;
+        }
+        LATCbits.LC1=1;
         __delay_ms(1000);
-         LATCbits.LC0=0;
+        LATCbits.LC1=0;
         __delay_ms(1000);
     }
-   
   
     //Main loop for the entire robot
     while(1){
@@ -112,7 +111,15 @@ void main(void) {
             setChamberEntrance(OPEN); 
             setLaserEmitter(ON);
             setUpperDiscRotation(ON); //upper disk rotates indefinitely as long as the machine is sorting
-            if (bottleComing()){ 
+            if ((numSeconds-lastTimeBottleCame)>MAX_BOTTLE_WAIT_TIME){
+                setLaserEmitter(OFF);
+                setUpperDiscRotation(OFF);
+                setFanRotation(OFF);
+                machineState==STANDBY;
+                dispTerminationScreen();
+            }
+            else if (bottleComing()){ 
+                lastTimeBottleCame=numSeconds;
                 setFanRotation(COUNTERCLOCKWISE); 
                 numBottles++;
                 __delay_ms(BOTTLE_FALL_IN_CHAMBER); //wait for bottle to fall in the chamber 
@@ -122,6 +129,7 @@ void main(void) {
                 setChamberExit(OPEN);
                 __delay_ms(BOTTLE_FALL_IN_CONTAINER);
                 setChamberExit(CLOSED);
+                
             }
             else{
                 setFanRotation(CLOCKWISE);
@@ -137,9 +145,13 @@ void interrupt keypressed(void) {
     if(INT1IF){ 
         int keypress = (PORTB & 0xF0) >> 4; //find out which key on the keypad was pressed 
         dispCorrectScreen(keypress); //display the correct screen, update currentScreen variable, and update machineState variable if "start" selected
+                                     //also starts the timer
         INT1IF = 0;     //Clear flag bit
     }
+    //TMR0IF is the interrupt flag -  gets set as 1 if timer0 overflows
+    if(TMR0IF){
+        numSeconds+=0.065536;
+        TMR0IF=0;
+    }
 }
-
-
 

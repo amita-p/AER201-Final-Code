@@ -2846,8 +2846,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _numYopCap `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 15: int numYopCap;
 "16
-[v _numSeconds `i ~T0 @X0 1 e ]
-[; ;machineStates.h: 16: int numSeconds;
+[v _numSeconds `Vd ~T0 @X0 1 e ]
+[; ;machineStates.h: 16: volatile double numSeconds;
 "19
 [v _eskaNoCapPos `i ~T0 @X0 1 e ]
 [; ;machineStates.h: 19: int eskaNoCapPos;
@@ -2998,9 +2998,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlMotors.c: 46: LATAbits.LA1=0;
 "46
 [e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 47: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
+[; ;controlMotors.c: 47: _delay((unsigned long)((100*0.1)*(1000000/4000.0)));
 "47
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 1000000 `l `d .4000.0 `ul ]
 "48
 }
 [e :U 281 ]
@@ -3030,9 +3030,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlMotors.c: 56: LATAbits.LA1=0;
 "56
 [e = . . _LATAbits 1 1 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 57: _delay((unsigned long)((100*0.1)*(10000000/4000.0)));
+[; ;controlMotors.c: 57: _delay((unsigned long)((100*0.1)*(1000000/4000.0)));
 "57
-[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * -> -> 100 `i `d .0.1 / -> -> 1000000 `l `d .4000.0 `ul ]
 "58
 }
 [e :U 284 ]
@@ -3093,15 +3093,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlMotors.c: 74: LATAbits.LA2=1;
 "74
 [e = . . _LATAbits 1 2 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 75: _delay((unsigned long)((0.1*0.7)*(10000000/4000.0)));
+[; ;controlMotors.c: 75: _delay((unsigned long)((0.1*0.7)*(1000000/4000.0)));
 "75
-[e ( __delay (1 -> * * .0.1 .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.1 .0.7 / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlMotors.c: 76: LATAbits.LA2=0;
 "76
 [e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 77: _delay((unsigned long)((0.1*(20-0.7))*(10000000/4000.0)));
+[; ;controlMotors.c: 77: _delay((unsigned long)((0.1*(20-0.7))*(1000000/4000.0)));
 "77
-[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .0.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .0.7 / -> -> 1000000 `l `d .4000.0 `ul ]
 "78
 }
 "73
@@ -3134,15 +3134,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;controlMotors.c: 84: LATAbits.LA2=1;
 "84
 [e = . . _LATAbits 1 2 -> -> 1 `i `uc ]
-[; ;controlMotors.c: 85: _delay((unsigned long)((0.1*1.7)*(10000000/4000.0)));
+[; ;controlMotors.c: 85: _delay((unsigned long)((0.1*1.7)*(1000000/4000.0)));
 "85
-[e ( __delay (1 -> * * .0.1 .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.1 .1.7 / -> -> 1000000 `l `d .4000.0 `ul ]
 [; ;controlMotors.c: 86: LATAbits.LA2=0;
 "86
 [e = . . _LATAbits 1 2 -> -> 0 `i `uc ]
-[; ;controlMotors.c: 87: _delay((unsigned long)((0.1*(20-1.7))*(10000000/4000.0)));
+[; ;controlMotors.c: 87: _delay((unsigned long)((0.1*(20-1.7))*(1000000/4000.0)));
 "87
-[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .1.7 / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * * .0.1 - -> -> 20 `i `d .1.7 / -> -> 1000000 `l `d .4000.0 `ul ]
 "88
 }
 "83

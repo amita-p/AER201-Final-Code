@@ -57,7 +57,7 @@
 // CONFIG7H
 #pragma config EBTRB = OFF      // Boot Block Table Read Protection bit (Boot Block (000000-0007FFh) not protected from table reads executed in other blocks)
 
-#define _XTAL_FREQ 10000000      // Define osc freq for use in delay macros 
+#define _XTAL_FREQ 1000000      // Define osc freq for use in delay macros 
 
 #endif	/* CONFIGBITS_H */
 
